@@ -4,6 +4,7 @@ from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.exceptions import AuthenticationFailed
 from rest_framework import viewsets
 
 from authentication.models import User
@@ -32,3 +33,20 @@ class UserRegisterView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": "registered"})
+
+class UserLoginView(APIView):
+    def post(self, request):
+        email = request.data['email']
+        password = request.data['password']
+
+        user = User.objects.filter(email=email).first()
+
+        if user is None:
+            raise AuthenticationFailed('User not found')
+
+        if not user.check_password(password):
+            raise AuthenticationFailed('Wrong Password!')
+        
+        return Response({"message": "Logged in!"})
+        
+
