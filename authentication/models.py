@@ -8,6 +8,7 @@ class User(AbstractUser):
     middle_name = models.CharField(max_length=256)
     last_name = models.CharField(max_length=256)
     email = models.EmailField(max_length=256, unique=True)
+    password = models.CharField(max_length=256)
     username = None
 
     USERNAME_FIELD = 'email'

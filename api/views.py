@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 from rest_framework import viewsets
 
 from authentication.models import User
-from authentication.serializer import UserSerializer
+from authentication.serializer import UserSerializer, UserAuthSerializer
 from forms.models import Form
 from forms.serializer import FormSerializer
 
@@ -21,3 +21,14 @@ class UsersViewSet(viewsets.ModelViewSet):
 class FormsViewSet(viewsets.ModelViewSet):
     queryset = Form.objects.all()
     serializer_class = FormSerializer
+
+class UserLoginView(APIView):
+    def post(self, request):
+        pass
+
+class UserRegisterView(APIView):
+    def post(self, request):
+        serializer = UserAuthSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"message": "registered"})

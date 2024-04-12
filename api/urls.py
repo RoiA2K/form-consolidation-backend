@@ -2,7 +2,8 @@ from django.urls import path
 from rest_framework.routers import DefaultRouter
 
 from api import views
-from api.views import FormsViewSet, UsersViewSet
+from api.views import FormsViewSet, UsersViewSet, UserRegisterView
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
 
 router = DefaultRouter()
 router.register(
@@ -13,4 +14,8 @@ router.register(
 )
 
 urlpatterns = [
+    path('register/', UserRegisterView.as_view()),
+    # Optional UI:
+    path('docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='docs'),
+    path('redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc')
 ]+router.urls
